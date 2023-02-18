@@ -1,4 +1,41 @@
-import { galleryItems } from './gallery-items.js';
+import { galleryItems } from "./gallery-items.js";
 // Change code below this line
 
 console.log(galleryItems);
+
+const galleryPhotos = document.querySelector(".gallery");
+const galleryMarkup = createGalleryMarkup(galleryItems);
+
+galleryPhotos.insertAdjacentHTML("beforeend", galleryMarkup);
+
+galleryPhotos.addEventListener("click", onGalleryMarkupClick);
+
+//1. Рендер сторінки
+
+function createGalleryMarkup(galleryItems) {
+  return galleryItems
+    .map(({ preview, original, description }) => {
+      return `<div class="gallery__item">
+         <a class="gallery__link" href="${original}">
+           <img class ="gallery__image"
+           src="${preview}"
+           data-source ="${original}" 
+           alt="${description}" />
+        </a>
+      </div>`;
+    })
+    .join("");
+}
+
+//2. Делегування подій і отримання велоикого зображення
+
+function onGalleryMarkupClick(event) {
+  event.preventDefault();
+
+  const imageEl = event.target;
+
+  if (!imageEl.classList.contains("gallery__image")) {
+    return;
+  }
+  imageEl.dataset.source;
+}

@@ -27,7 +27,9 @@ function createGalleryMarkup(galleryItems) {
     .join("");
 }
 
-//2. Делегування подій і отримання велоикого зображення
+//2. Делегування подій і отримання велоикого зображення.
+// Інсталяція бібліотеки та добавляння модального вікна
+// Додавання закриття модального вікна після натискання клавіші Escape.
 
 function onGalleryMarkupClick(event) {
   event.preventDefault();
@@ -37,5 +39,27 @@ function onGalleryMarkupClick(event) {
   if (!imageEl.classList.contains("gallery__image")) {
     return;
   }
-  imageEl.dataset.source;
+
+  const largeItem = imageEl.dataset.source;
+  const instance = basicLightbox.create(
+    `
+    <img src="${largeItem}" width="800" height="600">
+  `,
+    {
+      onShow: () => {
+        document.addEventListener("keydown", keyDown);
+      },
+      onClose: () => {
+        document.removeEventListener("keydown", keyDown);
+      },
+    }
+  );
+
+  instance.show();
+
+  function keyDown(event) {
+    if (event.key === "Escape") {
+      instance.close();
+    }
+  }
 }
